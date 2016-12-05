@@ -6,6 +6,8 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
+using Fact.Extensions.Collection;
+
 namespace Fact.Extensions.Collection.Android.TestApp
 {
     [Activity(Label = "Fact.Extensions.Collection.Android.TestApp", MainLauncher = true, Icon = "@drawable/icon")]
@@ -17,6 +19,9 @@ namespace Fact.Extensions.Collection.Android.TestApp
         {
             base.OnCreate(bundle);
 
+            //var bag = new PreferencesBag(global::Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this));
+
+            //bag.Set(null, typeof(int));
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 

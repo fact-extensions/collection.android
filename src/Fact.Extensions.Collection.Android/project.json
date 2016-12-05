@@ -1,13 +1,17 @@
-﻿{
+{
   "version": "1.0.0-*",
 
   "dependencies": {
+    "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha007",
     "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
-    "netstandard1.6": {
-      "imports": "dnxcore50"
+    "monoandroid6.0": {
+      "frameworkAssemblies": {
+        "Mono.Android": "*",
+        "mscorlib": "*"
+      }
     }
   }
 }
