@@ -19,8 +19,10 @@ namespace Fact.Extensions.Collection.Android.TestApp
         {
             base.OnCreate(bundle);
 
-            //var bag = new PreferencesBag(global::Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this));
+            var bag = new PreferencesBag(global::Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this));
 
+            bag.Set("test.pref", "testing pref!");
+            var testPref = bag.Get<string>("test.pref");
             //bag.Set(null, typeof(int));
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);

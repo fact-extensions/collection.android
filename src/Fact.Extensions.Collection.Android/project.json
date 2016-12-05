@@ -7,10 +7,10 @@
   },
 
   "frameworks": {
-    "monoandroid6.0": {
+    "monoandroid5.0": {
       "frameworkAssemblies": {
         "Mono.Android": "*",
-        "mscorlib": "*"
+        "mscorlib": "2.0.5"
       }
     }
   }
