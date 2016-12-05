@@ -8,6 +8,8 @@ using Android.OS;
 
 using Fact.Extensions.Collection;
 
+// Had to fiddle with deploy to get debugging to work.  Viva la FIDDLY XAMARIN:
+// http://stackoverflow.com/questions/32589438/xamarin-android-visual-studio-2015-could-not-connect-to-the-debugger
 namespace Fact.Extensions.Collection.Android.TestApp
 {
     [Activity(Label = "Fact.Extensions.Collection.Android.TestApp", MainLauncher = true, Icon = "@drawable/icon")]
