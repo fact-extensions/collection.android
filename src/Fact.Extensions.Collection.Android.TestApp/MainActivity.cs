@@ -32,14 +32,24 @@ namespace Fact.Extensions.Collection.TestApp
             bag.PropertyChanged += Bag_PropertyChanged;
 
             // NOTE: seems to be some kind of memory leak/aggressive freeing situation here
-            var prefs = sharedPreferences.ToInterface<IAppPreferences>();
-            //var prefs = bag.ToInterface<IAppPreferences>();
+            //var prefs = sharedPreferences.ToInterface<IAppPreferences>();
+            var prefs = bag.ToInterface<IAppPreferences>();
             var testPref1 = prefs.TestPref1;
             prefs.TestPref1 = "testing pref: " + DateTime.Now;
             var testOne = Resources.GetString(Resource.String.testOne);
             bag.Set("test.pref", "testing pref!");
             var testPref = bag.Get<string>("test.pref");
             testPref1 = bag.Get<string>("TestPref1");
+            try
+            {
+                // FIX: Generates null exception when it should be a DEBUG message.  Gotta set a policy
+                // somewhere I think...
+                bag.Set("crasher", new { anonymous = true });
+            }
+            catch(Exception e)
+            {
+
+            }
 
             bag.PropertyChanged -= Bag_PropertyChanged;
             

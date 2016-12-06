@@ -9,6 +9,7 @@ using Android.Preferences;
 using Android.Content;
 using System.Reflection;
 using Fact.Extensions.Serialization;
+using System.Diagnostics;
 
 namespace Fact.Extensions.Collection
 {
@@ -52,6 +53,15 @@ namespace Fact.Extensions.Collection
             }
         }
 
+        ISerializationManager SerializationManager
+        {
+            get
+            {
+                Debug.Assert(serializationManager != null, "Serialization Manager not set for this object, but needed for this operation");
+                return serializationManager;
+            }
+        }
+
         private void Listener_ValueChanged(string key)
         {
             propertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
@@ -68,8 +78,9 @@ namespace Fact.Extensions.Collection
             }
         }
 
-        public PreferenceBag(ISharedPreferences preferences)
+        public PreferenceBag(ISharedPreferences preferences, ISerializationManager serializationManager = null)
         {
+            this.serializationManager = serializationManager;
             this.preferences = preferences;
         }
 
@@ -99,9 +110,20 @@ namespace Fact.Extensions.Collection
                         edit.PutLong(key, (long)value);
                         break;
 
+                    case TypeCode.Single:
+                        edit.PutFloat(key, (float)value);
+                        break;
+
                     case TypeCode.Boolean:
                         edit.PutBoolean(key, (bool)value);
                         break;
+
+                    case TypeCode.Object:
+                        serializationManager.SerializeToString(value, type);
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
                 }
                 edit.Commit();
             }
@@ -115,9 +137,17 @@ namespace Fact.Extensions.Collection
             {
                 case TypeCode.Boolean: return preferences.GetBoolean(key, false);
                 case TypeCode.String: return preferences.GetString(key, null);
+                case TypeCode.Single: return preferences.GetFloat(key, 0);
+                case TypeCode.Int64: return preferences.GetLong(key, 0);
                 case TypeCode.Int16:
                 case TypeCode.Int32:
                     return preferences.GetInt(key, 0);
+
+                case TypeCode.Object:
+                {
+                    var stringValue = preferences.GetString(key, null);
+                    return serializationManager.Deserialize(stringValue, type);
+                }
 
                 default:
                     throw new NotSupportedException();

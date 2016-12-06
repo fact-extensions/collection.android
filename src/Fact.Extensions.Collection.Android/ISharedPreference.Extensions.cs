@@ -6,6 +6,8 @@ using Android.Content;
 
 namespace Fact.Extensions.Collection.Interceptor
 {
+    // Not using this while we iron out dependency nightmares
+#if UNUSED
     public static class ISharedPreference_Extensions
     {
         /// <summary>
@@ -21,4 +23,5 @@ namespace Fact.Extensions.Collection.Interceptor
             return bag.ToInterface<T>();
         }
     }
+#endif
 }
