@@ -18,7 +18,7 @@ namespace Fact.Extensions.Collection
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public class PreferenceBag : IBag, INotifyPropertyChanged
+    public class PreferenceBag : IBag, INotifyPropertyChanged, IRemover
     {
         readonly ISharedPreferences preferences;
         readonly ISerializationManager serializationManager;
@@ -152,6 +152,13 @@ namespace Fact.Extensions.Collection
                 default:
                     throw new NotSupportedException();
             }
+        }
+
+        public void Remove(string key)
+        {
+            var edit = Editor;
+            edit.Remove(key);
+            edit.Commit();
         }
     }
 }
