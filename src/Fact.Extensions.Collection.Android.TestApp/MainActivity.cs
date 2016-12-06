@@ -26,7 +26,7 @@ namespace Fact.Extensions.Collection.TestApp
             base.OnCreate(bundle);
 
             var sharedPreferences = Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this);
-            var bag = new PreferencesBag(sharedPreferences);
+            var bag = new PreferenceBag(sharedPreferences);
 
             bag.PropertyChanged += Bag_PropertyChanged;
 

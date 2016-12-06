@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha007",
+    "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha008",
     //"System.ComponentModel": "",
     "NETStandard.Library": "1.6.0"
   },
