@@ -5,17 +5,20 @@ using System.Threading.Tasks;
 
 using Akavache;
 using System.Reactive.Linq;
+using Fact.Extensions.Serialization;
 
-namespace Fact.Extensions.Collection.Akavache
+namespace Fact.Extensions.Collection
 {
     public class AkavacheBag : IBag, IBagAsync, IKeys<string>
         //, ITryGetter
     {
         readonly string key_prefix;
         readonly IBlobCache blobCache;
+        readonly ISerializationManager serializationManager;
 
         public AkavacheBag(IBlobCache blobCache, string key_prefix)
         {
+            this.serializationManager = new Fact.Extensions.Serialization.Newtonsoft.JsonSerializationManager();
             this.blobCache = blobCache;
             this.key_prefix = key_prefix;
         }
@@ -66,25 +69,27 @@ namespace Fact.Extensions.Collection.Akavache
         {
             set
             {
-                //blobCache.Insert(key, )
-                throw new NotImplementedException();
+                var valueByteArray = serializationManager.SerializeToByteArray(value, type);
+                blobCache.Insert(key, valueByteArray).Wait();
             }
         }
 
         public object Get(string key, Type type)
         {
-            throw new NotImplementedException();
+            var valueByteArray = blobCache.Get(key).Wait();
+            return serializationManager.Deserialize(valueByteArray, type);
         }
 
-        public Task<object> GetAsync(string key, Type type)
+        public async Task<object> GetAsync(string key, Type type)
         {
-            //blobCache.Get(key).Subscribe(x => x.)
-            throw new NotImplementedException();
+            var value = await blobCache.Get(key);
+            return serializationManager.Deserialize(value, type);
         }
 
-        public Task SetAsync(string key, object value, Type type)
+        public async Task SetAsync(string key, object value, Type type)
         {
-            throw new NotImplementedException();
+            var valueByteArray = serializationManager.SerializeToByteArray(value, type);
+            await blobCache.Insert(key, valueByteArray);
         }
     }
 }
