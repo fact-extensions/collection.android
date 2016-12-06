@@ -18,7 +18,11 @@ namespace Fact.Extensions.Collection
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public class PreferenceBag : IBag, INotifyPropertyChanged, IRemover
+    public class PreferenceBag : IBag, 
+        INotifyPropertyChanged, 
+        IRemover, 
+        IContainsKey<string>,
+        IKeys<string>
     {
         readonly ISharedPreferences preferences;
         readonly ISerializationManager serializationManager;
@@ -87,6 +91,14 @@ namespace Fact.Extensions.Collection
         ISharedPreferencesEditor Editor
         {
             get { return preferences.Edit(); }
+        }
+
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                return preferences.All.Keys;
+            }
         }
 
         public object this[string key, Type type]
@@ -159,6 +171,12 @@ namespace Fact.Extensions.Collection
             var edit = Editor;
             edit.Remove(key);
             edit.Commit();
+        }
+
+
+        public bool ContainsKey(string key)
+        {
+            return preferences.Contains(key);
         }
     }
 }
