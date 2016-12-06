@@ -7,6 +7,16 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Fact.Extensions.Collection.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fact.Extensions.Collection.Android.TestApp", "Fact.Extensions.Collection.Android.TestApp\Fact.Extensions.Collection.Android.TestApp.csproj", "{1FF853D1-E058-4FA8-B716-5C5B4AE73539}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B6811061-918C-4728-A2EC-7A62274C4F6F}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+		setenv.sh = setenv.sh
+		setenv_unix.sh = setenv_unix.sh
+		setenv_windows.sh = setenv_windows.sh
+		upload_all.sh = upload_all.sh
+		upload_project.sh = upload_project.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,5 +1,16 @@
 {
   "version": "1.0.0-*",
+  "authors": [ "Malachi Burke" ],
+  "description": "Android extensions for Fact.Extensions.Collection, including PreferencesBag",
+  "packOptions": {
+    "releaseNotes": ""
+  },
+
+  "buildOptions": {
+    "xmlDoc": "true",
+    /* Disable warnings about malformed XmlDoc stuff */
+    "nowarn": [ "1591", "1571", "1572", "1573", "1574", "1587" ]
+  },
 
   "dependencies": {
     "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha008",
