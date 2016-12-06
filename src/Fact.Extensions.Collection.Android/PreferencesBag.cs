@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 using Android.App;
 using Android.Preferences;
@@ -18,10 +19,56 @@ namespace Fact.Extensions.Collection
     /// TODO: Change this and other related classes to "PreferenceBag" dropping the plural, to maintain
     /// parity with Android API
     /// </remarks>
-    public class PreferencesBag : IBag
+    public class PreferencesBag : IBag, INotifyPropertyChanged
     {
         readonly ISharedPreferences preferences;
         readonly ISerializationManager serializationManager;
+        // Make listener a "has a" instead of an "is a" so that Java object memory management
+        // is only necessary when actually listening for changes
+        Listener listener;
+
+        event PropertyChangedEventHandler propertyChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add
+            {
+                if (listener == null)
+                {
+                    listener = new Listener();
+                    listener.ValueChanged += Listener_ValueChanged;
+                    preferences.RegisterOnSharedPreferenceChangeListener(listener);
+                }
+
+                propertyChanged += value;
+            }
+            remove
+            {
+                propertyChanged -= value;
+                
+                if (propertyChanged == null) // If no targets left, deallocate our Java listener
+                {
+                    preferences.UnregisterOnSharedPreferenceChangeListener(listener);
+                    listener = null;
+                }
+            }
+        }
+
+        private void Listener_ValueChanged(string key)
+        {
+            propertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+        }
+
+        public class Listener : Java.Lang.Object, 
+            ISharedPreferencesOnSharedPreferenceChangeListener
+        {
+            public event Action<string> ValueChanged;
+
+            public void OnSharedPreferenceChanged(ISharedPreferences sharedPreferences, string key)
+            {
+                ValueChanged?.Invoke(key);    
+            }
+        }
 
         public PreferencesBag(ISharedPreferences preferences)
         {

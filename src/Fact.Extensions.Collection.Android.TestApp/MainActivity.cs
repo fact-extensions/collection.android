@@ -9,6 +9,7 @@ using Android.OS;
 using Fact.Extensions.Collection;
 using Fact.Extensions.Caching;
 using Fact.Extensions.Collection.Interceptor;
+using Android.Util;
 
 // Had to fiddle with deploy to get debugging to work.  Viva la FIDDLY XAMARIN:
 // http://stackoverflow.com/questions/32589438/xamarin-android-visual-studio-2015-could-not-connect-to-the-debugger
@@ -18,6 +19,7 @@ namespace Fact.Extensions.Collection.TestApp
     public class MainActivity : Activity
     {
         int count = 1;
+        const string TAG = nameof(MainActivity);
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -26,15 +28,19 @@ namespace Fact.Extensions.Collection.TestApp
             var sharedPreferences = Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this);
             var bag = new PreferencesBag(sharedPreferences);
 
+            bag.PropertyChanged += Bag_PropertyChanged;
+
             // NOTE: seems to be some kind of memory leak/aggressive freeing situation here
             var prefs = sharedPreferences.ToInterface<IAppPreferences>();
             //var prefs = bag.ToInterface<IAppPreferences>();
             var testPref1 = prefs.TestPref1;
-            prefs.TestPref1 = "testing pref 2!";
+            prefs.TestPref1 = "testing pref: " + DateTime.Now;
             var testOne = Resources.GetString(Resource.String.testOne);
             bag.Set("test.pref", "testing pref!");
             var testPref = bag.Get<string>("test.pref");
             testPref1 = bag.Get<string>("TestPref1");
+
+            bag.PropertyChanged -= Bag_PropertyChanged;
             
             //bag.Set(null, typeof(int));
             // Set our view from the "main" layout resource
@@ -45,6 +51,11 @@ namespace Fact.Extensions.Collection.TestApp
             Button button = FindViewById<Button>(Resource.Id.MyButton);
 
             button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+        }
+
+        private void Bag_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Log.Info(TAG, "Prop changed: " + e.PropertyName);
         }
     }
 }
