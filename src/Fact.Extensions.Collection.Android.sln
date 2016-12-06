@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B6811061
 		upload_project.sh = upload_project.sh
 	EndProjectSection
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Fact.Extensions.Collection.Akavache", "Fact.Extensions.Collection.Akavache\Fact.Extensions.Collection.Akavache.xproj", "{6BB68BDB-FE72-4DD1-B161-ACD7A829DD3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1FF853D1-E058-4FA8-B716-5C5B4AE73539}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FF853D1-E058-4FA8-B716-5C5B4AE73539}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FF853D1-E058-4FA8-B716-5C5B4AE73539}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6BB68BDB-FE72-4DD1-B161-ACD7A829DD3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB68BDB-FE72-4DD1-B161-ACD7A829DD3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB68BDB-FE72-4DD1-B161-ACD7A829DD3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB68BDB-FE72-4DD1-B161-ACD7A829DD3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
