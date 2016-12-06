@@ -26,6 +26,7 @@ namespace Fact.Extensions.Collection.TestApp
 		
 		public static void UpdateIdValues()
 		{
+			global::Splat.Resource.String.library_name = global::Fact.Extensions.Collection.TestApp.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
@@ -92,14 +93,17 @@ namespace Fact.Extensions.Collection.TestApp
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f040002
+			public const int ApplicationName = 2130968578;
+			
 			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			public const int Hello = 2130968577;
 			
 			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			public const int library_name = 2130968576;
 			
-			// aapt resource value: 0x7f040002
-			public const int testOne = 2130968578;
+			// aapt resource value: 0x7f040003
+			public const int testOne = 2130968579;
 			
 			static String()
 			{
