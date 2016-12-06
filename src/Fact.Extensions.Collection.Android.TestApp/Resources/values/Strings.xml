@@ -2,4 +2,5 @@
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">Fact.Extensions.Collection.Android.TestApp</string>
+    <string name="testOne">test value</string>
 </resources>

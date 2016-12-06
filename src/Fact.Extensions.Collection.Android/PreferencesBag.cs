@@ -11,6 +11,13 @@ using Fact.Extensions.Serialization;
 
 namespace Fact.Extensions.Collection
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// TODO: Change this and other related classes to "PreferenceBag" dropping the plural, to maintain
+    /// parity with Android API
+    /// </remarks>
     public class PreferencesBag : IBag
     {
         readonly ISharedPreferences preferences;

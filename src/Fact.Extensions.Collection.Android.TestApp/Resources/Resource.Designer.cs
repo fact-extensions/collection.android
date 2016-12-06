@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Fact.Extensions.Collection.Android.TestApp.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Fact.Extensions.Collection.TestApp.Resource", IsApplication=true)]
 
-namespace Fact.Extensions.Collection.Android.TestApp
+namespace Fact.Extensions.Collection.TestApp
 {
 	
 	
@@ -97,6 +97,9 @@ namespace Fact.Extensions.Collection.Android.TestApp
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
+			
+			// aapt resource value: 0x7f040002
+			public const int testOne = 2130968578;
 			
 			static String()
 			{
