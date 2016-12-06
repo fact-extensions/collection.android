@@ -89,7 +89,7 @@ namespace Fact.Extensions.Collection
         public static T ToInterface<T>(this ISharedPreferences sharedPreferences)
             where T: class
         {
-            var bag = new PreferencesBag(sharedPreferences);
+            var bag = new PreferenceBag(sharedPreferences);
             return bag.ToInterface<T>();
         }
     }

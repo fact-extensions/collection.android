@@ -16,10 +16,8 @@ namespace Fact.Extensions.Collection
     /// 
     /// </summary>
     /// <remarks>
-    /// TODO: Change this and other related classes to "PreferenceBag" dropping the plural, to maintain
-    /// parity with Android API
     /// </remarks>
-    public class PreferencesBag : IBag, INotifyPropertyChanged
+    public class PreferenceBag : IBag, INotifyPropertyChanged
     {
         readonly ISharedPreferences preferences;
         readonly ISerializationManager serializationManager;
@@ -70,7 +68,7 @@ namespace Fact.Extensions.Collection
             }
         }
 
-        public PreferencesBag(ISharedPreferences preferences)
+        public PreferenceBag(ISharedPreferences preferences)
         {
             this.preferences = preferences;
         }
