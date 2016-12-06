@@ -13,18 +13,16 @@
   },
 
   "dependencies": {
-    "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha008",
-    //"System.ComponentModel": "",
-    "NETStandard.Library": "1.6.0"
+    "Fact.Extensions.Collection": "1.0.0-alpha008",
   },
 
   "frameworks": {
     "monoandroid5.0": {
       "frameworkAssemblies": {
         "Mono.Android": "*",
-        "System": "*",
+        "System": "2.*",
         "Java.Interop": "0.1.0.0",
-        "mscorlib": "2.0.5"
+        "mscorlib": "2.*"
       }
     }
   }

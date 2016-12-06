@@ -15,7 +15,6 @@
   "dependencies": {
     "Fact.Extensions.Serialization.Newtonsoft": "1.0.0-alpha008",
     "Fact.Extensions.Collection.Android": "*",
-    "NETStandard.Library": "1.6.0",
     "akavache": "5.0.0"
   },
 
