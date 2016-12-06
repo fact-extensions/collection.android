@@ -13,10 +13,8 @@
   },
 
   "dependencies": {
-    "Fact.Extensions.Collection.Interceptor": "1.0.0-alpha008",
     "Fact.Extensions.Serialization.Newtonsoft": "1.0.0-alpha008",
     "Fact.Extensions.Collection.Android": "*",
-    //"System.ComponentModel": "",
     "NETStandard.Library": "1.6.0",
     "akavache": "5.0.0"
   },
@@ -25,8 +23,8 @@
     "monoandroid5.0": {
       "frameworkAssemblies": {
         "Mono.Android": "*",
-        "System": "*",
-        "System.Core": "*",
+        "System": "2.*",
+        "System.Core": "2.*",
         "Java.Interop": "0.1.0.0",
         "mscorlib": "2.0.5"
       }
