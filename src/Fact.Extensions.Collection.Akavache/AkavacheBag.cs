@@ -16,7 +16,7 @@ namespace Fact.Extensions.Collection
         readonly IBlobCache blobCache;
         readonly ISerializationManager serializationManager;
 
-        public AkavacheBag(IBlobCache blobCache, string key_prefix)
+        public AkavacheBag(IBlobCache blobCache, string key_prefix = null)
         {
             this.serializationManager = new Fact.Extensions.Serialization.Newtonsoft.JsonSerializationManager();
             this.blobCache = blobCache;
@@ -90,6 +90,14 @@ namespace Fact.Extensions.Collection
         {
             var valueByteArray = serializationManager.SerializeToByteArray(value, type);
             await blobCache.Insert(key, valueByteArray);
+        }
+    }
+
+    public static class BlobCache_Extensions
+    {
+        public static AkavacheBag ToBag(this Akavache.IBlobCache blobCache)
+        {
+            return new AkavacheBag(blobCache);
         }
     }
 }

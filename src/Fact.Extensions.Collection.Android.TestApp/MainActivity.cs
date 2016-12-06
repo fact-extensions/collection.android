@@ -10,6 +10,7 @@ using Fact.Extensions.Collection;
 using Fact.Extensions.Caching;
 using Fact.Extensions.Collection.Interceptor;
 using Android.Util;
+using Akavache;
 
 // Had to fiddle with deploy to get debugging to work.  Viva la FIDDLY XAMARIN:
 // http://stackoverflow.com/questions/32589438/xamarin-android-visual-studio-2015-could-not-connect-to-the-debugger
@@ -45,6 +46,11 @@ namespace Fact.Extensions.Collection.TestApp
             //bag.Set(null, typeof(int));
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
+            var akavacheBag = BlobCache.UserAccount.ToBag();
+
+            akavacheBag.Set("test.cache", "testing pref again!");
+            var testCache = akavacheBag.Get<string>("test.cache");
 
             // Get our button from the layout resource,
             // and attach an event to it
