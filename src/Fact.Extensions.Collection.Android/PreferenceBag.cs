@@ -17,6 +17,8 @@ namespace Fact.Extensions.Collection
     /// 
     /// </summary>
     /// <remarks>
+    /// NOTE: Seems perhaps I should instead use preferences.All directly.  If it's more efficient,
+    /// I will
     /// </remarks>
     public class PreferenceBag : IBag, 
         INotifyPropertyChanged, 
