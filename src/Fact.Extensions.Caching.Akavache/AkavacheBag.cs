@@ -117,6 +117,19 @@ namespace Fact.Extensions.Caching
             }
         }
 
+
+        public async Task<Tuple<bool, object>> TryGetAsync(string key, Type type)
+        {
+            if (ContainsKey(key))
+            {
+                return Tuple.Create(true, await GetAsync(key, type));
+            }
+            else
+            {
+                return Tuple.Create(false, (object)null);
+            }
+        }
+
         public async Task SetAsync(string key, object value, Type type, params ICacheItemOption[] options)
         {
             if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
