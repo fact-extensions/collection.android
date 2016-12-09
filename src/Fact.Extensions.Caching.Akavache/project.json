@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-*",
   "authors": [ "Malachi Burke" ],
-  "description": "Akavache IBag implementation",
+  "description": "Akavache ICache implementation",
   "packOptions": {
     "releaseNotes": ""
   },

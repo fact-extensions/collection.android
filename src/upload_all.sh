@@ -3,6 +3,6 @@
 . ./setenv.sh
 
 ./upload_project.sh Fact.Extensions.Collection.Android
-./upload_project.sh Fact.Extensions.Collection.Akavache
+./upload_project.sh Fact.Extensions.Caching.Akavache
 
 
