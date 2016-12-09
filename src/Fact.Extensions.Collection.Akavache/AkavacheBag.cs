@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Akavache;
 using System.Reactive.Linq;
 using Fact.Extensions.Serialization;
-using Fact.Extensions.Caching;
+using Fact.Extensions.Collection;
 
-namespace Fact.Extensions.Collection
+namespace Fact.Extensions.Caching
 {
-    public class AkavacheBag : ICache, ICacheAsync, IKeys<string>
+    public class AkavacheBag : ICache, ICacheAsync, IKeys<string>, IContainsKey<string>
     {
         readonly string key_prefix;
         readonly IBlobCache blobCache;
@@ -18,11 +18,17 @@ namespace Fact.Extensions.Collection
 
         public AkavacheBag(IBlobCache blobCache, string key_prefix = null)
         {
-            this.serializationManager = new Fact.Extensions.Serialization.Newtonsoft.JsonSerializationManager();
+            this.serializationManager = new Serialization.Newtonsoft.JsonSerializationManager();
             this.blobCache = blobCache;
             this.key_prefix = key_prefix;
         }
 
+        /// <summary>
+        /// Beware, according to akavache documentation this value may not always be 100% accurate
+        /// </summary>
+        /// <remarks>
+        /// https://github.com/akavache/Akavache/blob/develop/src/Akavache/Portable/IBlobCache.cs
+        /// </remarks>
         public IEnumerable<string> Keys
         {
             get
@@ -99,7 +105,7 @@ namespace Fact.Extensions.Collection
 
         public bool TryGet(string key, Type type, out object value)
         {
-            if(Keys.Contains(key))
+            if(ContainsKey(key))
             {
                 value = Get(key, type);
                 return true;
@@ -122,6 +128,11 @@ namespace Fact.Extensions.Collection
         public async Task RemoveAsync(string key)
         {
             await blobCache.Invalidate(key);
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return blobCache.GetCreatedAt(key).Wait().HasValue;
         }
     }
 
