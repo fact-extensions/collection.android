@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Akavache;
 using System.Reactive.Linq;
 using Fact.Extensions.Serialization;
+using Fact.Extensions.Caching;
 
 namespace Fact.Extensions.Collection
 {
-    public class AkavacheBag : IBag, IBagAsync, IKeys<string>
-        //, ITryGetter
+    public class AkavacheBag : ICache, ICacheAsync, IKeys<string>
     {
         readonly string key_prefix;
         readonly IBlobCache blobCache;
@@ -23,21 +23,6 @@ namespace Fact.Extensions.Collection
             this.key_prefix = key_prefix;
         }
 
-        /*
-        public T this[string key]
-        {
-            get
-            {
-                return blobCache.GetObject<T>(key_prefix + key).Wait();
-            }
-
-            set
-            {
-                blobCache.InsertObject(key_prefix + key, value);
-            }
-        }*/
-
-
         public IEnumerable<string> Keys
         {
             get
@@ -47,6 +32,14 @@ namespace Fact.Extensions.Collection
                              select n.Substring(key_prefix.Length);
 
                 return result;
+            }
+        }
+
+        public IEnumerable<Type> SupportedOptions
+        {
+            get
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -91,11 +84,50 @@ namespace Fact.Extensions.Collection
             var valueByteArray = serializationManager.SerializeToByteArray(value, type);
             await blobCache.Insert(key, valueByteArray);
         }
+
+        public void Set(string key, object value, Type type, params ICacheItemOption[] options)
+        {
+            if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
+            // TODO: actually utilize options
+            this[key, type] = value;
+        }
+
+        public void Remove(string key)
+        {
+            blobCache.Invalidate(key).Wait();
+        }
+
+        public bool TryGet(string key, Type type, out object value)
+        {
+            if(Keys.Contains(key))
+            {
+                value = Get(key, type);
+                return true;
+            }
+            else
+            {
+                value = null;
+                return false;
+            }
+        }
+
+        public async Task SetAsync(string key, object value, Type type, params ICacheItemOption[] options)
+        {
+            if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
+
+            var valueByteArray = serializationManager.SerializeToByteArray(value, type);
+            await blobCache.Insert(key, valueByteArray);
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            await blobCache.Invalidate(key);
+        }
     }
 
     public static class BlobCache_Extensions
     {
-        public static AkavacheBag ToBag(this Akavache.IBlobCache blobCache)
+        public static AkavacheBag ToBag(this IBlobCache blobCache)
         {
             return new AkavacheBag(blobCache);
         }

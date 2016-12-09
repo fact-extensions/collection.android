@@ -13,8 +13,9 @@
   },
 
   "dependencies": {
-    "Fact.Extensions.Serialization.Newtonsoft": "1.0.0-alpha008",
+    "Fact.Extensions.Serialization.Newtonsoft": "1.0.0-alpha010",
     "Fact.Extensions.Collection.Android": "*",
+    "Fact.Extensions.Caching": "1.0.0-alpha010",
     "akavache": "5.0.0"
   },
 
