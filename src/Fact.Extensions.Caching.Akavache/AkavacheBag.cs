@@ -45,7 +45,8 @@ namespace Fact.Extensions.Caching
         {
             get
             {
-                throw new NotImplementedException();
+                yield return typeof(SlidingTimeExpiration);
+                yield return typeof(AbsoluteTimeExpiration);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Fact.Extensions.Caching
         public async Task<object> GetAsync(string key, Type type)
         {
             var value = await blobCache.Get(key);
-            return serializationManager.Deserialize(value, type);
+            return await serializationManager.DeserializeAsyncHelper(value, type);
         }
 
         public async Task SetAsync(string key, object value, Type type)
@@ -121,20 +122,27 @@ namespace Fact.Extensions.Caching
         public async Task<Tuple<bool, object>> TryGetAsync(string key, Type type)
         {
             if (ContainsKey(key))
-            {
                 return Tuple.Create(true, await GetAsync(key, type));
-            }
             else
-            {
                 return Tuple.Create(false, (object)null);
-            }
         }
 
         public async Task SetAsync(string key, object value, Type type, params ICacheItemOption[] options)
         {
-            if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
-
             var valueByteArray = serializationManager.SerializeToByteArray(value, type);
+            foreach (var option in options)
+            {
+                if(option is SlidingTimeExpiration)
+                {
+                    await blobCache.Insert(key, valueByteArray, ((SlidingTimeExpiration)option).Duration);
+                    return;
+                }
+                else if(option is AbsoluteTimeExpiration)
+                {
+                    await blobCache.Insert(key, valueByteArray, ((AbsoluteTimeExpiration)option).Expiry);
+                    return;
+                }
+            }
             await blobCache.Insert(key, valueByteArray);
         }
 
