@@ -13,8 +13,8 @@
   },
 
   "dependencies": {
-    "Fact.Extensions.Collection": "1.0.0-alpha011",
-    "Fact.Extensions.Serialization": "1.0.0-alpha011"
+    "Fact.Extensions.Collection": "1.0.0-alpha013",
+    "Fact.Extensions.Serialization": "1.0.0-alpha013"
   },
 
   "frameworks": {
