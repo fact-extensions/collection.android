@@ -7,11 +7,13 @@ using Akavache;
 using System.Reactive.Linq;
 using Fact.Extensions.Serialization;
 using Fact.Extensions.Collection;
+using Android.Util;
 
 namespace Fact.Extensions.Caching
 {
     public class AkavacheBag : ICache, ICacheAsync, IKeys<string>, IContainsKey<string>
     {
+        const string TAG = nameof(AkavacheBag);
         readonly string key_prefix;
         readonly IBlobCache blobCache;
         readonly ISerializationManager serializationManager;
@@ -108,7 +110,16 @@ namespace Fact.Extensions.Caching
         {
             if(ContainsKey(key))
             {
-                value = Get(key, type);
+                try
+                {
+                    value = Get(key, type);
+                }
+                catch(KeyNotFoundException e)
+                {
+                    // For race condition where key expires after ContainsKey says it's present
+                    value = null;
+                    return false;
+                }
                 return true;
             }
             else
@@ -122,7 +133,17 @@ namespace Fact.Extensions.Caching
         public async Task<Tuple<bool, object>> TryGetAsync(string key, Type type)
         {
             if (ContainsKey(key))
-                return Tuple.Create(true, await GetAsync(key, type));
+            {
+                try
+                {
+                    return Tuple.Create(true, await GetAsync(key, type));
+                }
+                catch(KeyNotFoundException e)
+                {
+                    // For race condition where key expires after ContainsKey says it's present
+                    return Tuple.Create(true, (object)null);
+                }
+            }
             else
                 return Tuple.Create(false, (object)null);
         }
@@ -153,7 +174,10 @@ namespace Fact.Extensions.Caching
 
         public bool ContainsKey(string key)
         {
-            return blobCache.GetCreatedAt(key).Wait().HasValue;
+            var result = blobCache.GetCreatedAt(key).Wait();
+            // FIX: Temporarily logging this, as I suspect it of always returning true
+            Log.Debug(TAG, $"ContainsKey: {key} = {result.HasValue})");
+            return result.HasValue;
         }
     }
 
