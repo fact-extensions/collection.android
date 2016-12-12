@@ -96,9 +96,16 @@ namespace Fact.Extensions.Caching
 
         public void Set(string key, object value, Type type, params ICacheItemOption[] options)
         {
-            if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
-            // TODO: actually utilize options
-            this[key, type] = value;
+            //if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
+            var valueByteArray = serializationManager.SerializeToByteArray(value, type);
+            Log.Debug(TAG, "Set phase 1");
+            var setAsyncHelper = SetAsyncHelper(key, valueByteArray, type, options);
+            setAsyncHelper.Wait();
+            Log.Debug(TAG, "Set phase 2");
+            if (setAsyncHelper.Result) return;
+            blobCache.Insert(key, valueByteArray).Wait();
+            Log.Debug(TAG, "Set phase 3");
+            //this[key, type] = value;
         }
 
         public void Remove(string key)
@@ -148,22 +155,38 @@ namespace Fact.Extensions.Caching
                 return Tuple.Create(false, (object)null);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="valueByteArray"></param>
+        /// <param name="type"></param>
+        /// <param name="options"></param>
+        /// <returns>true if helper handled set operation</returns>
+        async Task<bool> SetAsyncHelper(string key, byte[] valueByteArray, Type type, params ICacheItemOption[] options)
+        {
+            foreach (var option in options)
+            {
+                if (option is SlidingTimeExpiration)
+                {
+                    await blobCache.Insert(key, valueByteArray, ((SlidingTimeExpiration)option).Duration);
+                    return true;
+                }
+                else if (option is AbsoluteTimeExpiration)
+                {
+                    await blobCache.Insert(key, valueByteArray, ((AbsoluteTimeExpiration)option).Expiry);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public async Task SetAsync(string key, object value, Type type, params ICacheItemOption[] options)
         {
             var valueByteArray = serializationManager.SerializeToByteArray(value, type);
-            foreach (var option in options)
-            {
-                if(option is SlidingTimeExpiration)
-                {
-                    await blobCache.Insert(key, valueByteArray, ((SlidingTimeExpiration)option).Duration);
-                    return;
-                }
-                else if(option is AbsoluteTimeExpiration)
-                {
-                    await blobCache.Insert(key, valueByteArray, ((AbsoluteTimeExpiration)option).Expiry);
-                    return;
-                }
-            }
+            if (await SetAsyncHelper(key, valueByteArray, type, options)) return;
             await blobCache.Insert(key, valueByteArray);
         }
 

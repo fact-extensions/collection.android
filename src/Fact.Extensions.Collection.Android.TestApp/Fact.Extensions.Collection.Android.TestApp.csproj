@@ -64,29 +64,29 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fact.Extensions.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fact.Extensions.Caching.1.0.0-alpha008\lib\netstandard1.6\Fact.Extensions.Caching.dll</HintPath>
+      <HintPath>..\packages\Fact.Extensions.Caching.1.0.0-alpha013\lib\netstandard1.6\Fact.Extensions.Caching.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Fact.Extensions.Caching.Akavache">
+      <HintPath>..\Fact.Extensions.Caching.Akavache\bin\Debug\monoandroid50\Fact.Extensions.Caching.Akavache.dll</HintPath>
     </Reference>
     <Reference Include="Fact.Extensions.Collection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fact.Extensions.Collection.1.0.0-alpha008\lib\netstandard1.6\Fact.Extensions.Collection.dll</HintPath>
+      <HintPath>..\packages\Fact.Extensions.Collection.1.0.0-alpha013\lib\netstandard1.6\Fact.Extensions.Collection.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Fact.Extensions.Collection.Akavache">
-      <HintPath>..\Fact.Extensions.Collection.Akavache\bin\Debug\monoandroid50\Fact.Extensions.Collection.Akavache.dll</HintPath>
     </Reference>
     <Reference Include="Fact.Extensions.Collection.Android">
       <HintPath>..\Fact.Extensions.Collection.Android\bin\Debug\monoandroid50\Fact.Extensions.Collection.Android.dll</HintPath>
     </Reference>
     <Reference Include="Fact.Extensions.Collection.Interceptor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fact.Extensions.Collection.Interceptor.1.0.0-alpha008\lib\netstandard1.6\Fact.Extensions.Collection.Interceptor.dll</HintPath>
+      <HintPath>..\packages\Fact.Extensions.Collection.Interceptor.1.0.0-alpha013\lib\netstandard1.6\Fact.Extensions.Collection.Interceptor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fact.Extensions.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fact.Extensions.Serialization.1.0.0-alpha008\lib\netstandard1.6\Fact.Extensions.Serialization.dll</HintPath>
+      <HintPath>..\packages\Fact.Extensions.Serialization.1.0.0-alpha013\lib\netstandard1.6\Fact.Extensions.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fact.Extensions.Serialization.Newtonsoft, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fact.Extensions.Serialization.Newtonsoft.1.0.0-alpha008\lib\netstandard1.6\Fact.Extensions.Serialization.Newtonsoft.dll</HintPath>
+      <HintPath>..\packages\Fact.Extensions.Serialization.Newtonsoft.1.0.0-alpha013\lib\netstandard1.6\Fact.Extensions.Serialization.Newtonsoft.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
