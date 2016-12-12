@@ -98,13 +98,19 @@ namespace Fact.Extensions.Caching
         {
             //if (options.Any()) throw new InvalidOperationException("Cache options not supported yet");
             var valueByteArray = serializationManager.SerializeToByteArray(value, type);
-            Log.Debug(TAG, "Set phase 1");
+            Log.Verbose(TAG, "Set phase 1");
+            /*
             var setAsyncHelper = SetAsyncHelper(key, valueByteArray, type, options);
-            setAsyncHelper.Wait();
-            Log.Debug(TAG, "Set phase 2");
-            if (setAsyncHelper.Result) return;
+            Log.Info(TAG, "Set phase 1.1");
+            var result = setAsyncHelper.GetAwaiter().GetResult();
+            //setAsyncHelper.Wait();
+            Log.Info(TAG, "Set phase 2");
+            */
+            // FIX: Pokey but functional way to do this.  Hard to test, which is why it's still this way
+            var result = Task.Run(async () => await SetAsyncHelper(key, valueByteArray, type, options)).Result;
+            if (result) return;
             blobCache.Insert(key, valueByteArray).Wait();
-            Log.Debug(TAG, "Set phase 3");
+            Log.Verbose(TAG, "Set phase 3");
             //this[key, type] = value;
         }
 
@@ -199,7 +205,7 @@ namespace Fact.Extensions.Caching
         {
             var result = blobCache.GetCreatedAt(key).Wait();
             // FIX: Temporarily logging this, as I suspect it of always returning true
-            Log.Debug(TAG, $"ContainsKey: {key} = {result.HasValue})");
+            Log.Verbose(TAG, $"ContainsKey: {key} = {result.HasValue}");
             return result.HasValue;
         }
     }

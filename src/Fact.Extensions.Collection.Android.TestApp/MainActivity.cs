@@ -67,7 +67,12 @@ namespace Fact.Extensions.Collection.TestApp
             var akavacheBag = BlobCache.UserAccount.ToBag();
             var key = "test.cache";
 
-            akavacheBag.Set(key, "testing pref again!", TimeSpan.FromSeconds(30));
+            Log.Info(TAG, "Phase 1");
+
+            var expiry = new SlidingTimeExpiration(TimeSpan.FromSeconds(30));
+            akavacheBag.Set(key, "testing pref again!", typeof(string), expiry);
+
+            Log.Info(TAG, "Phase 2");
             //akavacheBag.Set(key, "testing pref again!");
             var testCache = akavacheBag.Get<string>(key);
 
