@@ -12,7 +12,10 @@ using Fact.Extensions.Collection.Interceptor;
 using Android.Util;
 using Akavache;
 
+using System.Reactive.Linq;
+
 using Fact.Extensions.Caching;
+using System.Threading.Tasks;
 
 // Had to fiddle with deploy to get debugging to work.  Viva la FIDDLY XAMARIN:
 // http://stackoverflow.com/questions/32589438/xamarin-android-visual-studio-2015-could-not-connect-to-the-debugger
@@ -64,7 +67,8 @@ namespace Fact.Extensions.Collection.TestApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var akavacheBag = BlobCache.UserAccount.ToBag();
+            //var akavacheBag = BlobCache.UserAccount.ToBag();
+            var akavacheBag = BlobCache.InMemory.ToBag();
             var key = "test.cache";
 
             Log.Info(TAG, "Phase 1");
@@ -79,6 +83,21 @@ namespace Fact.Extensions.Collection.TestApp
             // Get our button from the layout resource,
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.MyButton);
+
+            Task.Run(async delegate
+            {
+                var key2 = key + "2";
+                var key3 = key + "2";
+                byte[] byteArray = new byte[] { 1, 2, 3, 4, 5 };
+                var _expiry = TimeSpan.FromSeconds(30);
+                await BlobCache.InMemory.Insert(key2, byteArray, _expiry);
+                var byteArray2 = await BlobCache.InMemory.Get(key2);
+                await akavacheBag.SetAsync(key2, "test pref yet again!", typeof(string), expiry);
+                testCache = await akavacheBag.GetAsync<string>(key3.Substring(0));
+            }).ContinueWith(t =>
+            {
+                var e = t.Exception;
+            }, TaskContinuationOptions.OnlyOnFaulted);
 
             button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
 
