@@ -154,7 +154,9 @@ namespace Fact.Extensions.Caching
                 catch(KeyNotFoundException e)
                 {
                     // For race condition where key expires after ContainsKey says it's present
-                    return Tuple.Create(true, (object)null);
+                    // NOTE: I don't think it's usually a race condition, I think instead my code is malfunctioning
+                    Log.Verbose(TAG, "Encountered race condition, key not actually present");
+                    return Tuple.Create(false, (object)null);
                 }
             }
             else
