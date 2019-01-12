@@ -31,10 +31,15 @@ namespace Fact.Extensions.Collection.Interceptor
         /// <param name="sharedPreferences"></param>
         /// <param name="serializationManager"></param>
         /// <returns></returns>
+#if FEATURE_SERIALIZATION
         public static PreferenceBag AsBag(this ISharedPreferences sharedPreferences, ISerializationManager serializationManager)
         {
             var bag = new PreferenceBag(sharedPreferences, serializationManager);
             return bag;
         }
+#else
+        public static PreferenceBag AsBag(this ISharedPreferences sharedPreferences) =>
+            new PreferenceBag(sharedPreferences);
+#endif
     }
 }

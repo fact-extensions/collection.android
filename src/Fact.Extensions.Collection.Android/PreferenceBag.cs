@@ -11,6 +11,11 @@ using System.Reflection;
 using Fact.Extensions.Serialization;
 using System.Diagnostics;
 
+// NOTE: Disabling serialization manager features because:
+// a) it is based on old alpha-level fact.extensions.serialization code which is currently broken
+// b) fact.extensions.serialization was always made with 'pipelines' in mind, which have only recently
+//    actually truly come available, so it needs a once-over architecturally
+// result is no 'Object' serialization is supported, since serializationManager was used for that
 namespace Fact.Extensions.Collection
 {
     /// <summary>
@@ -27,7 +32,9 @@ namespace Fact.Extensions.Collection
         IKeys<string>
     {
         readonly ISharedPreferences preferences;
+#if FEATURE_SERIALIZATION
         readonly ISerializationManager serializationManager;
+#endif
         // Make listener a "has a" instead of an "is a" so that Java object memory management
         // is only necessary when actually listening for changes
         Listener listener;
@@ -59,6 +66,7 @@ namespace Fact.Extensions.Collection
             }
         }
 
+#if FEATURE_SERIALIZATION
         ISerializationManager SerializationManager
         {
             get
@@ -67,6 +75,7 @@ namespace Fact.Extensions.Collection
                 return serializationManager;
             }
         }
+#endif
 
         private void Listener_ValueChanged(string key)
         {
@@ -84,9 +93,15 @@ namespace Fact.Extensions.Collection
             }
         }
 
-        public PreferenceBag(ISharedPreferences preferences, ISerializationManager serializationManager = null)
+        public PreferenceBag(ISharedPreferences preferences
+#if FEATURE_SERIALIZATION
+            , ISerializationManager serializationManager = null
+#endif
+            )
         {
+#if FEATURE_SERIALIZATION
             this.serializationManager = serializationManager;
+#endif
             this.preferences = preferences;
         }
 
@@ -132,9 +147,11 @@ namespace Fact.Extensions.Collection
                         edit.PutBoolean(key, (bool)value);
                         break;
 
+#if FEATURE_SERIALIZATION
                     case TypeCode.Object:
                         serializationManager.SerializeToString(value, type);
                         break;
+#endif
 
                     default:
                         throw new NotSupportedException();
@@ -157,11 +174,13 @@ namespace Fact.Extensions.Collection
                 case TypeCode.Int32:
                     return preferences.GetInt(key, 0);
 
+#if FEATURE_SERIALIZATION
                 case TypeCode.Object:
                 {
                     var stringValue = preferences.GetString(key, null);
                     return serializationManager.Deserialize(stringValue, type);
                 }
+#endif
 
                 default:
                     throw new NotSupportedException();
