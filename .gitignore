@@ -42,3 +42,6 @@ src/**/.vs/
 src/packages
 
 project.lock.json
+
+# Android stuff
+**/Resources/*.designer.cs
