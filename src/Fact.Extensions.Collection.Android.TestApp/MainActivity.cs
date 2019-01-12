@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Akavache Fact.Extensions support DLL not working at this time
+//#define ENABLE_AKAVACHE
+
+using System;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -14,7 +17,6 @@ using Akavache;
 
 using System.Reactive.Linq;
 
-using Fact.Extensions.Caching;
 using System.Threading.Tasks;
 
 // Had to fiddle with deploy to get debugging to work.  Viva la FIDDLY XAMARIN:
@@ -68,6 +70,7 @@ namespace Fact.Extensions.Collection.TestApp
             SetContentView(Resource.Layout.Main);
 
             //var akavacheBag = BlobCache.UserAccount.ToBag();
+#if ENABLE_AKAVACHE
             var akavacheBag = BlobCache.InMemory.ToBag();
             var key = "test.cache";
 
@@ -108,6 +111,7 @@ namespace Fact.Extensions.Collection.TestApp
                 var containsKey = akavacheBag.ContainsKey(key);
                 Log.Info(TAG, "Test");
             };
+#endif
         }
 
         private void Bag_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
