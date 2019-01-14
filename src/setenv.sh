@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. ../ext/useful-scripts/setenv
 . ../ext/myget/setenv_nuget.sh
 
 export VERSION_PREFIX=1.0.0
